@@ -1,6 +1,7 @@
 import os
 import shutil
 from generate_page import generate_page, generate_pages_recursive
+import sys
 
 def recursive_copy(path_from, dist):
     for item in os.listdir(path_from):
@@ -20,14 +21,19 @@ def recursive_copy(path_from, dist):
 
 
 def main():
-    public = "./public"
+    basepath = '/'
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+
+    public = "docs"
+    # public = "./public"
     if os.path.isdir(public):
         shutil.rmtree(public)
 
     os.mkdir(public)
     recursive_copy("./static", public)
 
-    generate_pages_recursive("content", "template.html", public)
+    generate_pages_recursive("content", "template.html", public, basepath)
 
 
 
